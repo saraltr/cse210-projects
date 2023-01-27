@@ -9,34 +9,37 @@ class Program
         int userInt = 0;
         Console.WriteLine("Hello Develop02 World!");
 
-        try
+        while (userInt != 7)
         {
-            while (userInt != 7)
+            try
             {
+                // displays the menu
                 Console.WriteLine("Please select one of the following choices:");
                 Console.WriteLine("1. Write (get prompt)");
-                Console.WriteLine("2. Write a new entry");
-                Console.WriteLine("3. Display");
-                Console.WriteLine("4. Load");
-                Console.WriteLine("5. Save");
-                Console.WriteLine("6. Delete");
-                Console.WriteLine("7. Quit");
-                Console.Write("What would you like to do? ");
-                userInt = int.Parse(Console.ReadLine());
+                Console.WriteLine("2. Write (without prompt)");
+                Console.WriteLine("3. Display journal entries");
+                Console.WriteLine("4. Load journal from file ");
+                Console.WriteLine("5. Save journal to file");
+                Console.WriteLine("6. Delete journal entry");
+                Console.WriteLine("7. Exit");
+                Console.Write("> ");
+                userInt = Convert.ToInt32(Console.ReadLine());
 
                 if (userInt == 1)
                 {
+                    // calls the Prompt class
                     Entry newEntry = new Entry();
                     Prompt currentPrompt = new Prompt();
                     newEntry._question = currentPrompt.GetPrompt();
                     currentPrompt.DisplayPrompt();
                     newEntry._userEntry = Console.ReadLine();
                     newEntry._date = DateTime.Now.ToShortDateString();
+                    // stores the user's entry into alist inside of the journal class
                     journal._entries.Add(newEntry);
                 }
-
-                if (userInt == 2)
+                else if (userInt == 2)
                 {
+                    // calls only the Entry class so the user can write without a random prompt
                     Entry newEntry = new Entry();
                     Console.Write("> ");
                     newEntry._userEntry = Console.ReadLine();
@@ -46,22 +49,26 @@ class Program
 
                 else if (userInt == 3)
                 {
+                    // displays every entry so far
                     journal.DisplayEntries();
                 }
 
                 else if (userInt == 4)
                 {
+                    // loads enties from external text file
                     journal.LoadFile();
                 }
 
                 else if (userInt == 5)
                 {
+                    // saves new file
                     journal.SaveFile();
                 }
 
                 else if (userInt == 6)
                 {
-                    Console.WriteLine("Would you like to delete all of your enties? Or one scpescific? ");
+                    // delete one of every entry
+                    Console.WriteLine("Do you want to remove every one of your entries? Or one in the scpescic? ");
                     Console.WriteLine("1. Delete All");
                     Console.WriteLine("2. Delete One");
                     int choice = int.Parse(Console.ReadLine());
@@ -80,11 +87,18 @@ class Program
                     }
                 }
             }
-        }
-        catch (System.FormatException)
-        {
-            Console.WriteLine("Please enter a number");
+            catch (FormatException)
+            {
+                // handles wrong input from the user
+                Console.WriteLine("Invalid input, please enter a number between 1 and 7.");
+            }
+            catch (Exception ex)
+            {
+                // handles everyother exception
+                Console.WriteLine(ex.Message);
+            }
         }
 
     }
+
 }
