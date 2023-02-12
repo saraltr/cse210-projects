@@ -1,64 +1,90 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 class Program
 {
     static void Main(string[] args)
     {
-        List<Reference> references = new List<Reference>
-    {
-        new Reference("John", 3, 16),
-        new Reference("Matthew", 5, 44),
-        new Reference("Mark", 12, 31),
-        new Reference("Alma", 7, 11, 12)
-    };
-        List<List<string>> texts = new List<List<string>>
-    {
-        new List<string>
-        {
-            "For God so loved the world that he gave his one and only Son, that whoever believes in him shall not perish but have eternal life.",
-            "For God did not send his Son into the world to condemn the world, but to save the world through him."
-        },
-        new List<string>
-        {
-            "Therefore, I tell you, love your enemies and pray for those who persecute you,",
-            "so that you may be children of your Father in heaven."
-        },
-        new List<string>
-        {
-            "Love the Lord your God with all your heart and with all your soul and with all your mind.",
-            "This is the first and greatest commandment."
-        },
-        new List<string>
-        {
-            "And he will take upon him death, that he may loose the bands of death which bind his people; and he will take upon him their infirmities, that his bowels may be filled with mercy, according to the flesh, that he may know according to the flesh how to succor his people according to their infirmities"
-        }
-    };
+        // List of scripture references
+        List<Reference> references = new List<Reference>();
+        // List of the scripture text
+        List<List<string>> texts = new List<List<string>>();
 
+        try
+        {
+            using (StreamReader reader = new StreamReader("scriptures.txt"))
+            {
+                string line;
+                while ((line = reader.ReadLine()) != null)
+                {
+                    string[] parts = line.Split('%'); // the reference elements are divided by % on the text file
+                    string[] referenceParts = parts[0].Split('|'); // the text is defined by |
+
+                    // Create a new reference object
+                    Reference refs;
+                    if (referenceParts.Length == 3) // If the reference has 3 parts, create a Reference object with 3 parameters
+                    {
+                        refs = new Reference(referenceParts[0], int.Parse(referenceParts[1]), int.Parse(referenceParts[2]));
+                    }
+                    else if (referenceParts.Length == 4) // If the reference has 4 parts, create a Reference object with 4 parameters
+                    {
+                        refs = new Reference(referenceParts[0], int.Parse(referenceParts[1]), int.Parse(referenceParts[2]), int.Parse(referenceParts[3]));
+                    }
+                    else
+                    {
+                        throw new Exception("Invalid reference format");
+                        // If the reference has any other number of parts, throw an exception
+                    }
+                    references.Add(refs);
+                    texts.Add(new List<string>(parts[1].Split('|')));
+                }
+            }
+        }
+        catch (FileNotFoundException)
+        {
+            Console.WriteLine("The file does not exist.");
+            return;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("An error occurred while reading the file: " + ex.Message);
+            return;
+        }
+
+        // Create a random number generator
         Random random = new Random();
+        // Get a random index to choose a scripture
         int index = random.Next(references.Count);
+        // Get the reference and text at the random index
         Reference reference = references[index];
         List<string> text = texts[index];
+        // Create a new Scripture object using the reference and text
         Scripture scripture = new Scripture(reference, text);
 
+        // Display the reference
         reference.DisplayReference();
+        // Display the scripture
         scripture.DisplayScripture();
         Console.WriteLine("\nPress enter to continue or type 'quit' to finish");
         string input = Console.ReadLine();
 
+        // Continuously show the scripture until the user types 'quit'
         while (input != "quit")
         {
+            // uses the various methods to display, and hide the scriptures
             Console.Clear();
             reference.DisplayReference();
             scripture.HideWords();
             scripture.DisplayScripture();
             if (scripture.AllWordsHidden())
             {
+                // When every word have been hiden, ask the user if he wants to display a new scripture
                 Console.WriteLine("\nAll words have been hidden. Do you want a new scripture? (yes/no)");
                 input = Console.ReadLine();
                 if (input == "yes")
                 {
-                    index = random.Next(references.Count);
+                    index = random.Next(references.Count); // get a new random scripture
                     reference = references[index];
                     text = texts[index];
                     scripture = new Scripture(reference, text);
@@ -73,9 +99,9 @@ class Program
                 }
             }
 
+            // when the user types "quit" the program ends
             Console.WriteLine("\nPress enter to continue or type 'quit' to finish:");
             input = Console.ReadLine();
         }
-
     }
 }

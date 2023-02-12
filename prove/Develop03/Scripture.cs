@@ -6,6 +6,7 @@ class Scripture
 
     private static readonly Random random = new Random();
 
+    // Constructor
     public Scripture(Reference reference, List<string> text)
     {
         this._reference = reference;
@@ -20,16 +21,18 @@ class Scripture
         }
     }
 
+    // Method to display the scripture in the console
     public void DisplayScripture()
     {
         Console.WriteLine(_reference.ToString());
         foreach (Word word in text)
         {
-            Console.Write(word.GetWord() + " ");
+            Console.Write(word.GetWord() + " "); // adds spaces between the words
         }
         Console.WriteLine();
     }
 
+    // Method to hide words in the scripture text
     public void HideWords()
     {
         int numberOfWordsToHide = random.Next(1, text.Count - hiddenWordCount + 1);
@@ -46,7 +49,7 @@ class Scripture
         }
     }
 
-
+    // Method to check if all words have been hidden
     public bool AllWordsHidden()
     {
         return hiddenWordCount >= text.Count;
