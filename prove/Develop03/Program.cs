@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 
-public class Program
+class Program
 {
-    public static void Main()
+    static void Main(string[] args)
     {
         List<Reference> references = new List<Reference>
     {
@@ -43,7 +43,7 @@ public class Program
 
         reference.DisplayReference();
         scripture.DisplayScripture();
-        Console.WriteLine("\nPress enter to continue of type 'quit' to finish");
+        Console.WriteLine("\nPress enter to continue or type 'quit' to finish");
         string input = Console.ReadLine();
 
         while (input != "quit")
@@ -54,12 +54,28 @@ public class Program
             scripture.DisplayScripture();
             if (scripture.AllWordsHidden())
             {
-                Console.WriteLine("\nAll words have been hidden. The program will now end.");
-                break;
+                Console.WriteLine("\nAll words have been hidden. Do you want a new scripture? (yes/no)");
+                input = Console.ReadLine();
+                if (input == "yes")
+                {
+                    index = random.Next(references.Count);
+                    reference = references[index];
+                    text = texts[index];
+                    scripture = new Scripture(reference, text);
+                    Console.WriteLine("\nHere is your new scripture: ");
+                    reference.DisplayReference();
+                    scripture.DisplayScripture();
+                }
+                else
+                {
+                    Console.WriteLine("\nThe program will now end.");
+                    break;
+                }
             }
 
-            Console.WriteLine("\nPress enter to continue of type 'quit' to finish:");
+            Console.WriteLine("\nPress enter to continue or type 'quit' to finish:");
             input = Console.ReadLine();
         }
+
     }
 }

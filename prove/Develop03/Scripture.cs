@@ -1,13 +1,14 @@
 class Scripture
 {
-    private Reference reference;
+    private Reference _reference;
     private List<Word> text;
     private int hiddenWordCount = 0;
+
     private static readonly Random random = new Random();
 
     public Scripture(Reference reference, List<string> text)
     {
-        this.reference = reference;
+        this._reference = reference;
         this.text = new List<Word>();
         foreach (string line in text)
         {
@@ -21,7 +22,7 @@ class Scripture
 
     public void DisplayScripture()
     {
-        Console.WriteLine(reference.ToString());
+        Console.WriteLine(_reference.ToString());
         foreach (Word word in text)
         {
             Console.Write(word.GetWord() + " ");
