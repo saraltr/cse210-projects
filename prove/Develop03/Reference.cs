@@ -25,8 +25,8 @@ public class Reference
         _endVerse = endVerse;
     }
 
-    public void GetFullRef()
+    public void DisplayReference()
     {
-        Console.WriteLine($"{_book} {_chapter}: {_verse}-{_endVerse}");
+        Console.WriteLine(_book + " " + _chapter + ":" + _verse);
     }
 }

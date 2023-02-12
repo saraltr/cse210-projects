@@ -1,38 +1,35 @@
-public class Word
+class Word
 {
-    private string _word;
-    private bool _hidden;
+    private string word;
+    private bool hidden;
 
     public Word(string word)
     {
-        _word = word;
-        _hidden = false;
+        this.word = word;
+        this.hidden = false;
     }
 
     public string GetWord()
     {
-        if (_hidden)
+        if (hidden)
         {
-            return "*";
+            return "_";
         }
-        else
-        {
-            return _word;
-        }
-    }
-
-    public bool IsHidden()
-    {
-        return _hidden;
+        return word;
     }
 
     public void HideWord()
     {
-        _hidden = true;
+        hidden = true;
     }
 
     public void UnhideWord()
     {
-        _hidden = false;
+        hidden = false;
+    }
+
+    public bool IsHidden()
+    {
+        return hidden;
     }
 }
