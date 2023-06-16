@@ -49,8 +49,16 @@ class Program
 
                 else if (userChoice == 3)
                 {
-                    // Display existing entries
-                    journal.DisplayEntries();
+                    // first verifies if the user has enter an entry
+                    if (journal._entries.Count == 0)
+                    {
+                        Console.WriteLine("You don't have any entries yet.");
+                    }
+                    else
+                    {
+                        // Display existing entries
+                        journal.DisplayEntries();
+                    }
                 }
 
                 else if (userChoice == 4)
@@ -67,8 +75,8 @@ class Program
 
                 else if (userChoice == 6)
                 {
-                    // delete one of every entry
-                    Console.WriteLine("Do you want to remove all of your entries? Or do you want to remove a specific entry? ");
+                    // option to delete entries
+                    Console.WriteLine("Do you want to remove all of your entries (1)? Or do you want to remove a specific entry (2)? ");
                     Console.WriteLine("1. Delete All");
                     Console.WriteLine("2. Delete One");
                     int choice = int.Parse(Console.ReadLine());
