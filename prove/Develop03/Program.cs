@@ -8,7 +8,7 @@ class Program
     {
         // list of scripture references
         List<Reference> references = new List<Reference>();
-        // List of the scripture text
+        // list of the scripture text
         List<List<string>> texts = new List<List<string>>();
 
         try
@@ -52,30 +52,30 @@ class Program
             return;
         }
 
-        // Create a random number generator
+        // create a random number generator
         Random random = new Random();
-        // Get a random index to choose a scripture
+        // get a random index to choose a scripture
         int index = random.Next(references.Count);
-        // Get the reference and text at the random index
+        // get the reference and text at the random index
         Reference reference = references[index];
         List<string> text = texts[index];
-        // Create a new Scripture object using the reference and text
+        // create a new Scripture object using the reference and text
         Scripture scripture = new Scripture(reference, text);
 
-        // Display the reference
+        // display the reference
         reference.DisplayReference();
-        // Display the scripture
+        // display the scripture
         scripture.DisplayScripture();
         Console.WriteLine("\nPress enter to continue or type 'quit' to finish");
         string input = Console.ReadLine();
 
-        // Continuously show the scripture until the user types 'quit'
+        // continuously show the scripture until the user types 'quit'
         while (input != "quit")
         {
             // uses the various methods to display, and hide the scriptures
             Console.Clear();
             reference.DisplayReference();
-            scripture.HideRandomWords();
+            scripture.HideWords();
             scripture.DisplayScripture();
             if (scripture.AllWordsHidden())
             {

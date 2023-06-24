@@ -2,11 +2,11 @@ class Scripture
 {
     private Reference _reference;
     private List<Word> _text;
-    private int _hiddenWordCount = 0;
+    private int hiddenWordCount = 0;
 
     private static readonly Random random = new Random();
 
-    // constructor
+    // Constructor
     public Scripture(Reference reference, List<string> text)
     {
         this._reference = reference;
@@ -21,7 +21,7 @@ class Scripture
         }
     }
 
-    // method to display the scripture in the console
+    // Method to display the scripture in the console
     public void DisplayScripture()
     {
         Console.WriteLine(_reference.ToString());
@@ -32,10 +32,10 @@ class Scripture
         Console.WriteLine();
     }
 
-    // method to hide words in the scripture text
-    public void HideRandomWords()
+    // Method to hide words in the scripture text
+    public void HideWords()
     {
-        int numberOfWordsToHide = random.Next(1, _text.Count - _hiddenWordCount + 1);
+        int numberOfWordsToHide = random.Next(1, _text.Count - hiddenWordCount + 1);
         int count = 0;
         while (count < numberOfWordsToHide)
         {
@@ -43,15 +43,15 @@ class Scripture
             if (!_text[index].IsHidden())
             {
                 _text[index].HideWord();
-                _hiddenWordCount++;
+                hiddenWordCount++;
                 count++;
             }
         }
     }
 
-    // method to check if all words have been hidden
+    // Method to check if all words have been hidden
     public bool AllWordsHidden()
     {
-        return _hiddenWordCount >= _text.Count;
+        return hiddenWordCount >= _text.Count;
     }
 }
