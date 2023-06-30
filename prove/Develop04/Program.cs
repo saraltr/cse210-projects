@@ -38,7 +38,10 @@ class Program
                     ReflectingActivity reflectingActivity = new ReflectingActivity();
                     reflectingActivity.Run();
                     break;
-
+                case 3:
+                    ListingActivity listingActivity = new ListingActivity();
+                    listingActivity.Run();
+                    break;
             }
         }
     }

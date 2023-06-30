@@ -26,7 +26,7 @@ public class Activity
         Console.WriteLine();
 
         // prompt the user to enter the duration for the activity
-        Console.WriteLine("How long do you want to do the breathing exercise for? (in seconds)");
+        Console.WriteLine($"How long do you want to do the {_name} exercise for? (in seconds)");
         _duration = int.Parse(Console.ReadLine());
 
         Console.Clear();
