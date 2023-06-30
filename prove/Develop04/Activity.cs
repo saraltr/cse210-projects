@@ -1,11 +1,10 @@
-using System;
+using System.Collections.Generic;
 public class Activity
 {
     private string _name;
     private string _description;
     private int _duration;
     private int _spinnerCounter;
-
     public Activity()
     {
         _spinnerCounter = _duration = 0;
@@ -19,21 +18,17 @@ public class Activity
     public void SetDescription(string description)
     {
         _description = description;
-        // display the activity name and description
         Console.WriteLine($"Welcome to the {_name}!");
         Console.WriteLine();
         Console.WriteLine(description);
         Console.WriteLine();
 
-        // prompt the user to enter the duration for the activity
         Console.WriteLine($"How long do you want to do the {_name} exercise for? (in seconds)");
         _duration = int.Parse(Console.ReadLine());
 
         Console.Clear();
-        // display a countdown before starting the activity
         Console.WriteLine("Get ready...");
         ShowSpinner(5);
-
     }
 
     public void DisplayStartingMessage()
@@ -48,27 +43,22 @@ public class Activity
         ShowSpinner(3);
         Console.WriteLine($"You have completed another {_duration} seconds of the {_name}");
         ShowSpinner(3);
-
+        Console.WriteLine();
     }
+
     public void ShowSpinner(int seconds)
     {
-        List<string> annimationStrings = new List<string>();
-        annimationStrings.Add("|");
-        annimationStrings.Add("/");
-        annimationStrings.Add("-");
-        annimationStrings.Add("\\");
-        annimationStrings.Add("|");
-        annimationStrings.Add("/");
-        annimationStrings.Add("-");
-        annimationStrings.Add("\\");
+        List<string> annimationStrings = new List<string>()
+        {
+            "|", "/", "-", "\\", "|", "/", "-", "\\"
+        };
 
         DateTime startTime = DateTime.Now;
         DateTime endTime = startTime.AddSeconds(seconds);
 
         int i = 0;
 
-        // display the spinner animation for the specified duration
-        while(DateTime.Now < endTime)
+        while (DateTime.Now < endTime)
         {
             string a = annimationStrings[i];
             Console.Write(a);
@@ -81,10 +71,13 @@ public class Activity
             {
                 i = 0;
             }
-
         }
     }
-    
+    public string GetName()
+    {
+        return _name;
+    }
+
     public int GetDuration()
     {
         return _duration;
@@ -92,7 +85,6 @@ public class Activity
 
     public void ShowCountDown(int numSecondsToRun)
     {
-        // display a countdown from the specified number of seconds
         for (int i = numSecondsToRun; i >= 1; i--)
         {
             Console.Write(string.Format("{0}", i));
@@ -100,7 +92,6 @@ public class Activity
             Thread.Sleep(1000);
         }
         Console.WriteLine(" ");
-
     }
 
 }
