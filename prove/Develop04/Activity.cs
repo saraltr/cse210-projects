@@ -85,13 +85,15 @@ public class Activity
 
     public void ShowCountDown(int numSecondsToRun)
     {
-        for (int i = numSecondsToRun; i >= 1; i--)
+        for (int i = numSecondsToRun; i > 0; i--)
         {
-            Console.Write(string.Format("{0}", i));
-            Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
+            Console.Write(i);
             Thread.Sleep(1000);
+            Console.Write("\b \b");
         }
+        
         Console.WriteLine(" ");
+
     }
 
 }

@@ -26,13 +26,10 @@ public class ListingActivity : Activity
         Console.WriteLine(currentPrompt);
 
         Console.Write("You may begin in: ");
+
         // countdown before starting the questions
-        for (int i = 5; i > 0; i--)
-        {
-            Console.Write(i);
-            Thread.Sleep(1000);
-            Console.Write("\b \b");
-        }
+        ShowCountDown(5);
+
         Console.WriteLine();
 
         // get the list of the user's responses

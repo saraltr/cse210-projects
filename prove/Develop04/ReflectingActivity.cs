@@ -43,13 +43,9 @@ public class ReflectingActivity : Activity
 
         Console.WriteLine("Now ponder on each of the following questions, as they relate to this experience");
         Console.Write("You may begin in: ");
+
         // countdown before starting the questions
-        for (int i = 5; i > 0; i--)
-        {
-            Console.Write(i);
-            Thread.Sleep(1000);
-            Console.Write("\b \b");
-        }
+        ShowCountDown(5);
 
         Console.Clear();
         DisplayQuestions();
