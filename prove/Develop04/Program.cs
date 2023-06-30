@@ -4,7 +4,6 @@ class Program
 {
     static void Main(string[] args)
     {
-        // Console.WriteLine("Hello Develop04 World!");
 
         Console.WriteLine("Welcome to the Mindfulness Program!");
         Console.WriteLine();
@@ -35,9 +34,10 @@ class Program
                     BreathingActivity breathingActivity = new BreathingActivity();
                     breathingActivity.Run();
                     break;
-                // case 2:
-                    
-                //     break;
+                case 2:
+                    ReflectingActivity reflectingActivity = new ReflectingActivity();
+                    reflectingActivity.Run();
+                    break;
 
             }
         }
