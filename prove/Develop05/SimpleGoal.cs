@@ -1,8 +1,10 @@
 public class SimpleGoal : Goal
 {
     private bool _isComplete;
+    private string _type = "Simple Goal";
 
-    public SimpleGoal(string name, string description, int points, bool complete) : base(name, description, points)
+    public SimpleGoal(string name = "", string description = "", int points = 0, bool complete = false)
+        : base(name, description, points)
     {
         _isComplete = complete;
     }
@@ -20,18 +22,7 @@ public class SimpleGoal : Goal
 
     public override string GetStringRepresentation()
     {
-        string representation = $"Simple Goal:{GetName()}, {GetDescription()}, Points: {GetPoints()}, Completed: {IsComplete()}";
+        string representation = $"{_type}:{GetName()}, {GetDescription()}, Points: {GetPoints()}, Completed: {IsComplete()}";
         return representation;
-    }
-
-    public override void CreatGoal()
-    {
-        Console.Write("What is the name of your goal? ");
-        string goalName = Console.ReadLine();
-        SetGoalName(goalName);
-        Console.WriteLine();
-        Console.Write("What is a Short description of it? ");
-        string description = Console.ReadLine();
-        SetDescription(description);
     }
 }

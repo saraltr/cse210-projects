@@ -5,7 +5,7 @@ public abstract class Goal
     private int _points;
 
     // constructor
-    public Goal(string name, string description, int points)
+    public Goal(string name = "", string description = "", int points = 0)
     {
         _shortName = name;
         _description = description;
@@ -32,7 +32,7 @@ public abstract class Goal
         return _description;
     }
 
-    public void SetPoins(int points)
+    public void SetPoints(int points)
     {
         _points = points;
     }
@@ -46,10 +46,22 @@ public abstract class Goal
     public abstract bool IsComplete();
     public virtual string GetDetailsString()
     {
-        string details = $"[ ] {_shortName} ({_description}) ";
+        string completionStatus = IsComplete() ? "[x]" : "[ ]";
+        string details = $"{completionStatus} {_shortName} ({_description}) ";
         return details;
     }
     public abstract string GetStringRepresentation();
-    public abstract void CreatGoal();
+    public virtual void CreateGoal()
+    {
+        Console.Write("What is the name of your goal? ");
+        SetGoalName(Console.ReadLine());
+
+        Console.Write("What is a short description of it? ");
+        SetDescription(Console.ReadLine());
+
+        Console.Write("How many points is the goal worth? ");
+        int.TryParse(Console.ReadLine(), out int points);
+        SetPoints(points);
+    }
     
 }
