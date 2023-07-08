@@ -5,13 +5,24 @@ public class GoalManager
 {
     private List<Goal> _goals; // list to store the user's goals
     private int _score; // user's score
-    private int _level; 
+    private int _level; // user's level 
+    private List<Badge> _earnedBadges; //list to store the user's earned badges
+    private List<Badge> _allBadges; // store all badges
+
+    // Badge requirements
+    private int _simpleGoalCountRequirement = 5;
+    private int _eternalGoalCountRequirement = 5;
+    private int _checklistGoalCountRequirement = 1;
+    private int _scoreBadgeRequirement = 200;
 
     public GoalManager()
     {
         _goals = new List<Goal>(); // initialize the list of goals
         _score = 0; // initialize the score to 0
-        _level = 1;
+        _level = 1; // initialize the default level to 1
+        _earnedBadges = new List<Badge>(); // initialize the list of earned badges
+        _allBadges = new List<Badge>(); // initialize the list of all badges
+        CreateBadges(); // create the badges
     }
 
     public void Start()
@@ -248,6 +259,7 @@ public class GoalManager
                 }
                 _score += goal.GetPoints(); // add the points earned for the goal to the score
                 CheckLevelUp(); // check level status
+                CheckBadges(goal); // adds badge if earned
                 Console.WriteLine($"You earned {goal.GetPoints()} points");
             }
         }
@@ -262,6 +274,114 @@ public class GoalManager
             _level++; // increase the level
             Console.WriteLine();
             Console.WriteLine($"Congratulations! You reached Level {_level}!");
+        }
+    }
+
+    private void CreateBadges()
+    {
+
+        // Create badges
+        Badge simpleGoalBadge = new Badge("B1", "*Simple Goal Archiver*", "Complete 5 Simple Goals");
+        Badge eternalGoalBadge = new Badge("B2", "*Eternal Goal Archiver*", "Complete 5 Eternal Goals");
+        Badge checklistGoalBadge = new Badge("B3", "*Checklist Goal Archiver*", "Complete 1 Checklist Goal");
+        Badge scoreBadge = new Badge("B4", "*Score Achiever*", "Score 500 points");
+
+        // adds the badges to the list
+        _allBadges.Add(simpleGoalBadge);
+        _allBadges.Add(eternalGoalBadge);
+        _allBadges.Add(checklistGoalBadge);
+        _allBadges.Add(scoreBadge);
+    }
+
+    private int GetSimpleGoalCount()
+    {
+        int count = 0;
+        foreach (Goal goal in _goals)
+        {
+            if (goal is SimpleGoal && goal.IsComplete())
+            {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    private int GetEternalGoalCount()
+    {
+        int count = 0;
+        foreach (Goal goal in _goals)
+        {
+            if (goal is EternalGoal)
+            {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    private int GetChecklistGoalCount()
+    {
+        int count = 0;
+        foreach (Goal goal in _goals)
+        {
+            if (goal is ChecklistGoal && goal.IsComplete())
+            {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    private void EarnBadge(string badgeId)
+    {
+        // check if the badge is already earned
+        foreach (Badge badge in _earnedBadges)
+        {
+            if (badge.GetId() == badgeId)
+            {
+                return; // badge already earned, so exit the method
+            }
+        }
+
+        // find the badge with the matching ID and add it to the earned badges
+        foreach (Badge badge in _allBadges)
+        {
+            if (badge.GetId() == badgeId)
+            {
+                _earnedBadges.Add(badge);
+                Console.WriteLine($"Congratulations! You earned the {badge.GetName()} badge!");
+                break;
+            }
+        }
+    }
+
+    private void CheckBadges(Goal goal)
+    {
+        if (goal is SimpleGoal)
+        {
+            if (GetSimpleGoalCount() >= _simpleGoalCountRequirement)
+            {
+                EarnBadge("B1"); // earn the Simple Goal Archiver badge
+            }
+        }
+        else if (goal is EternalGoal)
+        {
+            if (GetEternalGoalCount() >= _eternalGoalCountRequirement)
+            {
+                EarnBadge("B2"); // earn the Eternal Goal Archiver badge
+            }
+        }
+        else if (goal is ChecklistGoal)
+        {
+            if (GetChecklistGoalCount() >= _checklistGoalCountRequirement)
+            {
+                EarnBadge("B3"); // earn the Checklist Goal Archiver badge
+            }
+        }
+
+        if (_score >= _scoreBadgeRequirement)
+        {
+            EarnBadge("B4"); // earn the Score Achiever badge
         }
     }
 }
