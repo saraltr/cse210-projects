@@ -29,7 +29,7 @@ public class GoalManager
     {
         int userMenuInput = 0;
 
-        while (userMenuInput != 6)
+        while (userMenuInput != 7)
         {
             Console.WriteLine();
             // displays the current score
@@ -63,6 +63,9 @@ public class GoalManager
                     RecordEvent();
                     break;
                 case 6:
+                    ListEarnedBagdes();
+                    break;
+                case 7:
                     Console.WriteLine("Thank you for using the Eternal Quest Program!");
                     break;
                 default:
@@ -82,7 +85,8 @@ public class GoalManager
             "3. Save Goals",
             "4. Load Goals",
             "5. Record Event",
-            "6. Quit"
+            "6. List earned badges",
+            "7. Quit"
         };
 
         foreach(string option in menuOptions)
@@ -291,6 +295,20 @@ public class GoalManager
         _allBadges.Add(eternalGoalBadge);
         _allBadges.Add(checklistGoalBadge);
         _allBadges.Add(scoreBadge);
+    }
+
+    private void ListEarnedBagdes()
+    {   
+        if (_earnedBadges.Count == 0)
+        {
+        Console.WriteLine("No badges earned yet.");
+        return;
+        }
+        
+        foreach (Badge badge in _earnedBadges)
+        {
+            Console.WriteLine($"{badge.GetId()}. {badge.GetName()} - {badge.GetDescription()}");
+        }
     }
 
     private int GetSimpleGoalCount()
