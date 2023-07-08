@@ -22,7 +22,7 @@ public class SimpleGoal : Goal
 
     public override string GetStringRepresentation()
     {
-        string representation = $"{_type}:{GetName()}, {GetDescription()}, Points: {GetPoints()}, Completed: {IsComplete()}";
+        string representation = $"{_type}: {GetName()}, {GetDescription()}, Points: {GetPoints()}, Completed: {IsComplete()}";
         return representation;
     }
 }

@@ -28,12 +28,13 @@ public class ChecklistGoal : Goal
 
     public override bool IsComplete()
     {
-        return true;
+        return _amountCompleted >= _target;
     }
 
     public override string GetStringRepresentation()
     {
-        string representation = $"{_type}: {GetName()}, {GetDescription()}, Points: {GetPoints()}, Number of times completed: {_amountCompleted} Completed: {IsComplete()}";
+        string completionStatus = (_amountCompleted >= _target) ? "true" : "false";
+        string representation = $"{_type}: {GetName()}, {GetDescription()}, Points: {GetPoints()}, Completed: {completionStatus}, Number of times completed: {_amountCompleted}/{_target}";
         return representation;
     }
 
@@ -41,11 +42,15 @@ public class ChecklistGoal : Goal
     {
         return _amountCompleted;
     }
+    public void SetAmountCompleted(int amountCompleted)
+    {
+        _amountCompleted = amountCompleted;
+    }
 
     public override void CreateGoal()
     {
         base.CreateGoal();
-        Console.WriteLine("How many times does this goal need to be accomplished for a bonus?");
+        Console.Write("How many times does this goal need to be accomplished for a bonus?");
         int.TryParse(Console.ReadLine(), out int target);
         _target = target;
 
@@ -55,7 +60,8 @@ public class ChecklistGoal : Goal
     }
     public override string GetDetailsString()
     {
-        string details = $"[ ] {GetName()} ({GetDescription()}) -- Currently completed: {GetAmountCompleted()}/{_target}";
+        string statusSymbol = IsComplete() ? "[x]" : "[ ]";
+        string details = $"{statusSymbol} {GetName()} ({GetDescription()}) -- Currently completed: {GetAmountCompleted()}/{_target}, Bonus points: {_bonus}";
         return details;
     }
 }

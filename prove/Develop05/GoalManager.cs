@@ -1,3 +1,6 @@
+using System.IO; 
+using System.Collections.Generic;
+
 public class GoalManager
 {
     private List<Goal> _goals; // list to store the user's goals
@@ -136,15 +139,90 @@ public class GoalManager
 
     private void SaveGoals()
     {
+        Console.WriteLine("What is the filename for the goal file? ");
 
+        string fileName = Console.ReadLine();
+
+        using (StreamWriter outputFile = new StreamWriter(fileName))
+        {
+            outputFile.WriteLine($"Current Score: {_score}");
+
+            foreach(Goal goal in _goals)
+            {
+                string goalString = goal.GetStringRepresentation();
+                outputFile.WriteLine(goalString);
+
+            }
+        }
         Console.WriteLine("Goals saved successfully!");
     }
 
-    private void LoadGoals()
-    {
+private void LoadGoals()
+{
+    Console.WriteLine("What is the filename for the goal file?");
+    string fileName = Console.ReadLine();
 
-        Console.WriteLine("Goals loaded successfully!");
+    if (!File.Exists(fileName))
+    {
+        Console.WriteLine("File not found. Please enter a valid file name.");
+        return;
     }
+
+    string[] lines = File.ReadAllLines(fileName);
+
+    bool isFirstLine = true;
+
+    foreach (string line in lines)
+    {
+        // first line should be the score
+        if (isFirstLine)
+        {
+            if (line.StartsWith("Current Score: "))
+            {
+                int.TryParse(line.Substring("Current Score: ".Length), out _score);
+            }
+            isFirstLine = false;
+        }
+        else
+        {
+            string[] parts = line.Split(':', ',', '/');
+
+            // gets the different parts of the string
+            string goalType = parts[0].Trim();
+            string goalName = parts[1].Trim();
+            string goalDescription = parts[2].Trim();
+            int goalPoints = int.Parse(parts[4].Trim());
+            bool goalCompletion = bool.Parse(parts[6].Trim());
+
+            Goal goal;
+
+            switch (goalType)
+            {
+                case "Simple Goal":
+                    goal = new SimpleGoal(goalName, goalDescription, goalPoints, goalCompletion);
+                    break;
+                case "Eternal Goal":
+                    goal = new EternalGoal(goalName, goalDescription, goalPoints, goalCompletion);
+                    break;
+                case "Checklist Goal":
+                    int goalAmountCompleted = int.Parse(parts[8].Trim());
+                    int goalTarget = int.Parse(parts[9].Trim());
+                    int goalBonus = int.Parse(parts[11].Trim());
+                    goal = new ChecklistGoal(goalName, goalDescription, goalPoints, goalTarget, goalBonus);
+                    ((ChecklistGoal)goal).SetAmountCompleted(goalAmountCompleted);
+                    break;
+                default:
+                    Console.WriteLine("Invalid goal type found in the file. Skipping the goal.");
+                    continue;
+            }
+
+            // adds the loaded goals to the list
+            _goals.Add(goal);
+        }
+    }
+
+    Console.WriteLine("Goals loaded successfully!");
+}
 
     private void RecordEvent()
     {
