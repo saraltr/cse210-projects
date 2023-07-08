@@ -5,11 +5,13 @@ public class GoalManager
 {
     private List<Goal> _goals; // list to store the user's goals
     private int _score; // user's score
+    private int _level; 
 
     public GoalManager()
     {
         _goals = new List<Goal>(); // initialize the list of goals
         _score = 0; // initialize the score to 0
+        _level = 1;
     }
 
     public void Start()
@@ -21,6 +23,7 @@ public class GoalManager
             Console.WriteLine();
             // displays the current score
             Console.WriteLine($"You have {_score} points");
+            Console.WriteLine($"Current Level: {_level}");
             Console.WriteLine();
             // display the menu options
             DisplayMenu();
@@ -132,7 +135,7 @@ public class GoalManager
         int index = 1;
         foreach (Goal goal in _goals)
         {
-            Console.WriteLine($"{index}. {goal.GetDetailsString()}"); // // display goal details
+            Console.WriteLine($"{index}. {goal.GetDetailsString()}"); // display goal details
             index++;
         }
     }
@@ -157,72 +160,75 @@ public class GoalManager
         Console.WriteLine("Goals saved successfully!");
     }
 
-private void LoadGoals()
-{
-    Console.WriteLine("What is the filename for the goal file?");
-    string fileName = Console.ReadLine();
-
-    if (!File.Exists(fileName))
+    private void LoadGoals()
     {
-        Console.WriteLine("File not found. Please enter a valid file name.");
-        return;
-    }
+        Console.WriteLine("What is the filename for the goal file?");
+        string fileName = Console.ReadLine();
 
-    string[] lines = File.ReadAllLines(fileName);
-
-    bool isFirstLine = true;
-
-    foreach (string line in lines)
-    {
-        // first line should be the score
-        if (isFirstLine)
+        if (!File.Exists(fileName))
         {
-            if (line.StartsWith("Current Score: "))
-            {
-                int.TryParse(line.Substring("Current Score: ".Length), out _score);
-            }
-            isFirstLine = false;
+            Console.WriteLine("File not found. Please enter a valid file name.");
+            return;
         }
-        else
+
+        string[] lines = File.ReadAllLines(fileName);
+
+        bool isFirstLine = true;
+
+        foreach (string line in lines)
         {
-            string[] parts = line.Split(':', ',', '/');
-
-            // gets the different parts of the string
-            string goalType = parts[0].Trim();
-            string goalName = parts[1].Trim();
-            string goalDescription = parts[2].Trim();
-            int goalPoints = int.Parse(parts[4].Trim());
-            bool goalCompletion = bool.Parse(parts[6].Trim());
-
-            Goal goal;
-
-            switch (goalType)
+            // first line should be the score
+            if (isFirstLine)
             {
-                case "Simple Goal":
-                    goal = new SimpleGoal(goalName, goalDescription, goalPoints, goalCompletion);
-                    break;
-                case "Eternal Goal":
-                    goal = new EternalGoal(goalName, goalDescription, goalPoints, goalCompletion);
-                    break;
-                case "Checklist Goal":
-                    int goalAmountCompleted = int.Parse(parts[8].Trim());
-                    int goalTarget = int.Parse(parts[9].Trim());
-                    int goalBonus = int.Parse(parts[11].Trim());
-                    goal = new ChecklistGoal(goalName, goalDescription, goalPoints, goalTarget, goalBonus);
-                    ((ChecklistGoal)goal).SetAmountCompleted(goalAmountCompleted);
-                    break;
-                default:
-                    Console.WriteLine("Invalid goal type found in the file. Skipping the goal.");
-                    continue;
+                if (line.StartsWith("Current Score: "))
+                {
+                    string[] parts = line.Split(':');
+
+                    int score = int.Parse(parts[1]);
+                    _score = score;
+                }
+                isFirstLine = false;
             }
+            else
+            {
+                string[] parts = line.Split(':', ',', '/');
 
-            // adds the loaded goals to the list
-            _goals.Add(goal);
+                // gets the different parts of the string
+                string goalType = parts[0].Trim();
+                string goalName = parts[1].Trim();
+                string goalDescription = parts[2].Trim();
+                int goalPoints = int.Parse(parts[4].Trim());
+                bool goalCompletion = bool.Parse(parts[6].Trim());
+
+                Goal goal;
+
+                switch (goalType)
+                {
+                    case "Simple Goal":
+                        goal = new SimpleGoal(goalName, goalDescription, goalPoints, goalCompletion);
+                        break;
+                    case "Eternal Goal":
+                        goal = new EternalGoal(goalName, goalDescription, goalPoints, goalCompletion);
+                        break;
+                    case "Checklist Goal":
+                        int goalAmountCompleted = int.Parse(parts[8].Trim());
+                        int goalTarget = int.Parse(parts[9].Trim());
+                        int goalBonus = int.Parse(parts[11].Trim());
+                        goal = new ChecklistGoal(goalName, goalDescription, goalPoints, goalTarget, goalBonus);
+                        ((ChecklistGoal)goal).SetAmountCompleted(goalAmountCompleted);
+                        break;
+                    default:
+                        Console.WriteLine("Invalid goal type found in the file. Skipping the goal.");
+                        continue;
+                }
+
+                // adds the loaded goals to the list
+                _goals.Add(goal);
+            }
         }
-    }
 
-    Console.WriteLine("Goals loaded successfully!");
-}
+        Console.WriteLine("Goals loaded successfully!");
+    }
 
     private void RecordEvent()
     {
@@ -241,8 +247,21 @@ private void LoadGoals()
                     Console.WriteLine("Congratulations you have completed your goal!");
                 }
                 _score += goal.GetPoints(); // add the points earned for the goal to the score
+                CheckLevelUp(); // check level status
                 Console.WriteLine($"You earned {goal.GetPoints()} points");
             }
+        }
+    }
+
+    private void CheckLevelUp()
+    {
+        int nextLevelScore = _level * 100; // calculate the score required for the next level
+
+        if (_score >= nextLevelScore)
+        {
+            _level++; // increase the level
+            Console.WriteLine();
+            Console.WriteLine($"Congratulations! You reached Level {_level}!");
         }
     }
 }

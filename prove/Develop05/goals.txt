@@ -1,4 +1,4 @@
-Current Score: 0
+Current Score: 20
 Simple Goal: give a talk, speak in sacrament, Points: 50, Completed: False
 Eternal Goal: study the scriptures, study for at least 10 min, Points: 25, Completed: False
 Checklist Goal: study english, study for exam for 30min, Points: 20, Completed: false, Number of times completed: 1/4, Bonus: 80
