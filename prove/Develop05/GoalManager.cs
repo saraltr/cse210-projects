@@ -13,7 +13,7 @@ public class GoalManager
     private int _simpleGoalCountRequirement = 5;
     private int _eternalGoalCountRequirement = 5;
     private int _checklistGoalCountRequirement = 1;
-    private int _scoreBadgeRequirement = 200;
+    private int _scoreBadgeRequirement = 500;
 
     public GoalManager()
     {
@@ -304,7 +304,7 @@ public class GoalManager
         Console.WriteLine("No badges earned yet.");
         return;
         }
-        
+
         foreach (Badge badge in _earnedBadges)
         {
             Console.WriteLine($"{badge.GetId()}. {badge.GetName()} - {badge.GetDescription()}");
