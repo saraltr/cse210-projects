@@ -27,10 +27,10 @@ class Program
 
         // creates the second order
         Order order2 = new Order(customer2);
-        order2.AddProduct(new Product("Milk", "P6", 2.99, 2));
+        order2.AddProduct(new Product("Milk", "P5", 2.99, 2));
         order2.AddProduct(new Product("Eggs", "P2", 3.7, 2));
-        order2.AddProduct(new Product("Apples", "P5", 0.99, 6));
-        order2.AddProduct(new Product("Bread", "P4", 1.99, 1));
+        order2.AddProduct(new Product("Apples", "P6", 0.99, 6));
+        order2.AddProduct(new Product("Bread", "P7", 1.99, 1));
 
 
         // packing label and shipping label for the second order
